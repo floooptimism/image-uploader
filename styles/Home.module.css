@@ -1,0 +1,37 @@
+.content {
+    box-shadow: 0px 4px 12px 0px #0000001A;
+    border-radius: 12px;
+}
+
+.header {
+    color: #4F4F4F;
+}
+
+.secondary {
+    color: #828282;
+}
+
+.button {
+    background-color: #2F80ED;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+
+    transition: background-color 0.3s;
+}
+
+.button:hover{
+    background-color: #4990ec;
+}
+
+.uploaded_resultlink {
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    background-color: #F6F8FB;
+    color: #4F4F4F;
+}
+
+.uploaded_resultlink::after{
+    content: "fucktard"
+}

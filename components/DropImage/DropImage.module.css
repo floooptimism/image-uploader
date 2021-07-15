@@ -1,0 +1,12 @@
+.drop_image {
+    background: #F6F8FB;
+    border: 1px dashed #97BEF4;
+    box-sizing: border-box;
+    border-radius: 12px;
+
+}
+
+.text{
+    color: #BDBDBD;
+    letter-spacing: -0.035em;
+}

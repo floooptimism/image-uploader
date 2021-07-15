@@ -1,0 +1,31 @@
+{
+  "name": "image-uploader",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cloudinary": "^1.26.2",
+    "multer": "^1.4.2",
+    "next": "11.0.1",
+    "next-connect": "^0.10.1",
+    "rc-progress": "^3.1.4",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-simple-snackbar": "^1.1.11",
+    "react-spinners": "^0.11.0",
+    "streamifier": "^0.1.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "eslint": "7.30.0",
+    "eslint-config-next": "11.0.1",
+    "postcss": "^8.3.5",
+    "tailwindcss": "^2.2.4"
+  }
+}
