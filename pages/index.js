@@ -26,7 +26,7 @@ export default function Home() {
     const maxProg = Math.random() * 10 + 85;
 
     function uploadProgress(progressEvent){
-        setPercentageProgress(progressEvent.total / progressEvent.loaded * maxProg);
+        setPercentageProgress((progressEvent.loaded / progressEvent.total) * maxProg);
     }
 
     // axios paramters
@@ -151,9 +151,7 @@ export default function Home() {
                 <button className="absolute right-1 h-5/6 top-1 px-3 py-2 text-white rounded-lg" style={{backgroundColor: "#2F80ED"}} onClick={copyToClipboard}>Copy Link</button>
                 
             </div>
-
-            {/* <button className="p-3 bg-gray-700 text-white rounded-lg mt-12 font-semibold">Upload another Image</button> */}
-            <a className="text-gray-500 underline font-semibold" href="#" onClick={()=>{setAppState(STATE_NONE)}}><p className="mt-12">Upload another image</p></a>
+            <a className="text-gray-500 underline font-semibold" href="#" onClick={()=>{setPercentageProgress(0);setAppState(STATE_NONE)}}><p className="mt-12">Upload another image</p></a>
 
         </div>
     )
