@@ -23,7 +23,7 @@ export default function Home() {
     const [uploadedImage, setUploadedImage] = useState('');
     const [uploadedLink, setUploadedLink] = useState('');
     
-    const maxProg = Math.random() * 10 + 85;
+    const maxProg = 100;
 
     function uploadProgress(progressEvent){
         setPercentageProgress((progressEvent.loaded / progressEvent.total) * maxProg);
