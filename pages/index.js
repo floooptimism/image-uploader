@@ -98,6 +98,9 @@ export default function Home() {
                 }
         
             }catch(err){
+                setAppState(STATE_NONE);
+                openSnackbar("❌  Upload failed. Please try again.");
+                setPercentageProgress(0);
                 console.log(err);
             }
         }
