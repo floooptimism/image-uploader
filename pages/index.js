@@ -47,7 +47,7 @@ export default function Home() {
 
         if(ev.dataTransfer.items.length == 1){
             if(ev.dataTransfer.items[0].kind === 'file'){
-                let file = ev.dataTransfer.items[0].getAsFile()
+                let file = ev.dataTransfer.items[0].getAsFile();
                 uploadFile(file);
             }
         }
@@ -61,16 +61,24 @@ export default function Home() {
     }
 
     function setFileAsImageSource(file){
-        setUploadedImage(URL.createObjectURL(file));
+        // setUploadedImage(URL.createObjectURL(file));
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            // log to console
+            // logs data:<type>;base64,wL2dvYWwgbW9yZ...
+            setUploadedImage(reader.result);
+        };
+        reader.readAsDataURL(file);
     }
 
-    async function linkToClipboard(){
+    async function copyToClipboard(){
         await navigator.clipboard.writeText(uploadedLink)
         openSnackbar("✅  Copied to Clipboard.");
     }
 
     async function uploadFile(file){
         if(file.type.match("image")){
+            setFileAsImageSource(file);
             let formdata = new FormData();
             formdata.append("image", file);
             config.data = formdata;
@@ -80,9 +88,9 @@ export default function Home() {
                 let res = await axios(config);
                 if(res.data.status){
                     setPercentageProgress(100);
+                    setFileAsImageSource(file);
                     setAppState(STATE_UPLOADED);
                     setUploadedLink(res.data.link)
-                    setFileAsImageSource(file);
                 }else{
                     openSnackbar("❌  Upload failed. Please try again.");
                     setAppState(STATE_NONE);
@@ -96,13 +104,14 @@ export default function Home() {
     }
 
     const FOOTER = (
-        <div className="absolute bottom-0 font-semibold p-3 text-center w-full" style={{color: '#A9A9A9'}}>
-            <h1>created by <a href="https://github.com/floooptimism" target="_blank" className="underline">floooptimism</a> · devChallenges.io</h1>
+        <div className="mt-8 font-semibold p-3 text-center w-full" style={{color: '#A9A9A9'}}>
+            <h1>created by <a href="https://github.com/floooptimism" target="_blank" rel="noreferrer" className="underline">floooptimism</a> · devChallenges.io</h1>
         </div>
     )
 
     const NONE_PAGE = (
-        <div className={`w-full sm:w-5/6 md:w-1/3 bg-white mx-auto rounded p-8 mt-20 ${styles.content} text-center`}>
+        <>
+        <div className={`w-full sm:w-5/6 md:w-1/3 bg-white mx-auto rounded p-8 mt-16 ${styles.content} text-center`}>
             <h1 className={`text-2xl font-semibold ${styles.header} mb-6`}>Upload your image</h1>
             <p className={`${styles.secondary} text-sm font-semibold mb-8`}>File should be Jpeg, Png,...</p>
             <DropImage drop={fileDrop}></DropImage>
@@ -113,7 +122,11 @@ export default function Home() {
                 <label htmlFor="file" className={`${styles.button} p-3`}>Choose a file</label>
                 <input id="file" className="hidden" type="file" onChange={fileChange}/>
             </form>
+            
         </div>
+        {FOOTER}
+        </>
+        
     )
 
     const UPLOADING_PAGE = (
@@ -130,11 +143,12 @@ export default function Home() {
         <div className={`w-full sm:w-5/6 md:w-1/3 bg-white mx-auto rounded p-8 mt-20 text-center ${styles.content}`}>
             <svg style={{fill: "#219653"}} className="mx-auto" xmlns="http://www.w3.org/2000/svg" width="50" viewBox="0 0 512 512"><title>ionicons-v5-e</title><path d="M256,48C141.31,48,48,141.31,48,256s93.31,208,208,208,208-93.31,208-208S370.69,48,256,48ZM364.25,186.29l-134.4,160a16,16,0,0,1-12,5.71h-.27a16,16,0,0,1-11.89-5.3l-57.6-64a16,16,0,1,1,23.78-21.4l45.29,50.32L339.75,165.71a16,16,0,0,1,24.5,20.58Z"/></svg>
             <h1 className="font-semibold text-2xl mt-4" style={{color: "#4F4F4F"}}>Uploaded Successfully!</h1>
-            <img id="" className="mx-auto my-8 rounded-lg" src={uploadedImage}></img>
-
+            <div className="w-full h-96 relative my-8">
+                {uploadedImage && <Image src={uploadedImage} alt="uploaded image" layout="fill" className="mx-auto my-8 rounded-lg"/>}
+            </div>
             <div className="relative">
-                <input type="text" value={uploadedLink} className={`${styles.uploaded_resultlink} px-2 py-3 w-full font-semibold`} readonly></input>
-                <button className="absolute right-1 h-5/6 top-1 px-3 py-2 text-white rounded-lg" style={{backgroundColor: "#2F80ED"}} onClick={linkToClipboard}>Copy Link</button>
+                <input type="text" value={uploadedLink} className={`${styles.uploaded_resultlink} px-2 py-3 w-full font-semibold`} readOnly></input>
+                <button className="absolute right-1 h-5/6 top-1 px-3 py-2 text-white rounded-lg" style={{backgroundColor: "#2F80ED"}} onClick={copyToClipboard}>Copy Link</button>
                 
             </div>
 
@@ -149,12 +163,13 @@ export default function Home() {
                 <Head>
                     <title>Image Uploader</title>
                 </Head>
-    
-                {appState === STATE_NONE && NONE_PAGE ||
-                appState === STATE_UPLOADED && UPLOADED_PAGE ||
-                appState === STATE_UPLOADING && UPLOADING_PAGE}
+                <div>
+                    {appState === STATE_NONE && NONE_PAGE ||
+                    appState === STATE_UPLOADED && UPLOADED_PAGE ||
+                    appState === STATE_UPLOADING && UPLOADING_PAGE}
+                </div>
 
-            {FOOTER}
+            
             </div>
         )
     
